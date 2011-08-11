@@ -1,0 +1,116 @@
+allprojects {
+	apply plugin: 'eclipse-wtp'
+
+	group = 'org.vaadin.hene.splitbutton'
+	version = '0.9.0'
+}
+
+libraries = [
+	vaadin: 'com.vaadin:vaadin:6.6.4',
+	popupbutton: 'org.vaadin.addons:popupbutton:1.2.1',
+	gwtUser: 'com.google.gwt:gwt-user:2.3.0',
+	gwtDev: 'com.google.gwt:gwt-dev:2.3.0',
+	validationApi: 'javax.validation:validation-api:1.0.0.GA:sources'
+	
+]
+
+subprojects {
+	apply plugin: 'java'
+
+	archivesBaseName = 'splitbutton'
+
+	sharedManifest = manifest {
+		attributes 'Implementation-Title': 'SplitButton'
+		attributes 'Implementation-Version': version
+		attributes 'Implementation-Vendor': 'Henri Kerola / Vaadin Ltd'
+		attributes 'Vaadin-Package-Version': '1'
+		attributes 'Vaadin-License-Title': 'Apache License 2.0'
+		attributes 'Vaadin-Widgetsets': 'org.vaadin.hene.splitbutton.widgetset.SplitButtonWidgetSet'
+	}
+
+	configurations {
+		provided
+		vaadinDependency
+		compileWidgetset
+	}
+
+	repositories {
+		mavenCentral()
+		mavenRepo(urls: 'http://maven.vaadin.com/vaadin-addons')
+	}
+
+	dependencies {
+		compile(libraries.vaadin)
+		compile(libraries.popupbutton)
+		vaadinDependency(libraries.popupbutton)
+		provided(libraries.gwtDev)
+		provided(libraries.gwtUser)
+		compileWidgetset(libraries.validationApi)
+	}
+	
+	sourceSets {
+		main { compileClasspath += configurations.provided }
+	}
+
+	eclipse {
+		classpath { plusConfigurations += configurations.provided }
+	}	
+}
+
+
+project(':splitbutton-addon') {
+	
+	jar {
+		// Include sources to jar
+		from sourceSets.main.allJava
+		manifest = project.manifest {
+			from sharedManifest
+		}
+	}
+	
+	task createZip(type: Zip) {
+		from jar.outputs.files
+		from configurations.vaadinDependency
+		into('META-INF') {
+			from "$buildDir/tmp/zip/MANIFEST.MF"
+		}
+		
+		manifest = project.manifest {
+			attributes 'Vaadin-Addon': jar.outputs.files.collect { File file -> file.name }.join(' ')
+			attributes 'Vaadin-Dependency': configurations.vaadinDependency.collect { File file -> file.name }.join(' ')
+			from sharedManifest
+		}
+		manifest.writeTo("$buildDir/tmp/zip/MANIFEST.MF")
+	}
+}
+	
+
+project(':splitbutton-demo') {
+	apply plugin: 'war'
+	apply plugin: 'jetty'
+	
+	dependencies {
+		compile project(':splitbutton-addon')
+	}
+
+	task compileWidgetset << {
+		ant.java(classname:'com.google.gwt.dev.Compiler', failOnError: 'true', fork: 'true') 
+		{
+			jvmarg(value: '-Xss1024k')
+			arg(line: '-logLevel INFO')
+			arg(line: '-war src/main/webapp/VAADIN/widgetsets')
+			arg(value: 'org.vaadin.hene.splitbutton.widgetset.SplitButtonDemoApplicationWidgetSet')
+			classpath {
+				pathElement(location: 'src/main/resources')
+				pathElement(path: configurations.compile.asPath)
+				pathElement(path: configurations.compileWidgetset.asPath)
+				pathElement(path: configurations.provided.asPath)
+			}
+		}
+	}
+	
+	war {
+		dependsOn compileWidgetset
+		archiveName = archivesBaseName + '.war'
+	}
+}

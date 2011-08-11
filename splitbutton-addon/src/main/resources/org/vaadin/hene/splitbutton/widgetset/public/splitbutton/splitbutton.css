@@ -1,0 +1,57 @@
+.v-splitbutton {
+	height: 26px;
+}
+
+.v-splitbutton .v-button {
+	height: 25px;
+	vertical-align: top;
+}
+
+.v-splitbutton .v-button:active, 
+.v-splitbutton .v-button.v-pressed {
+	background-position: left -52px;
+}
+
+.v-splitbutton .v-button:focus .v-button-wrap {
+	background-position: left -26px;
+}
+
+.v-splitbutton .v-button .v-button-wrap,
+.v-splitbutton .v-disabled.v-button .v-button-wrap {
+	background-position: left -130px;
+}
+
+.v-splitbutton .v-button:active .v-button-wrap,
+.v-splitbutton .v-button.v-pressed .v-button-wrap {
+	background-position: left -78px;
+}
+
+.v-splitbutton .v-popupbutton {
+	border-left: 1px solid #ababab;
+	border-right: none;
+	padding-left: 0;
+}
+
+.v-splitbutton .v-popupbutton:focus {
+	border-left-color: #7aa6d1;	
+}
+
+.v-splitbutton .v-popupbutton .v-button-wrap {
+	background-position: right -130px;
+	padding-left: 2px;
+	padding-right: 10px;
+}
+
+.v-splitbutton .v-popupbutton:focus .v-button-wrap {
+	background-position: right -26px;
+}
+
+.v-splitbutton .v-popupbutton:active, 
+.v-splitbutton .v-popupbutton.v-pressed {
+	border-left-color: #ababab;
+}
+
+.v-splitbutton .v-popupbutton:active .v-button-wrap,
+.v-splitbutton .v-popupbutton.v-pressed .v-button-wrap {
+	background-position: right -78px;
+}
