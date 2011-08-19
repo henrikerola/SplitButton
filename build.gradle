@@ -59,15 +59,36 @@ subprojects {
 
 
 project(':splitbutton-addon') {
-	
+
+	apply plugin: 'maven'
+
+	task generatePom {
+		pom = pom()
+		pom.artifactId = archivesBaseName
+		pom.whenConfigured {
+			// Remove vaadin from the dependency list in the pom
+			pom -> pom.dependencies.remove(pom.dependencies.find {dep -> dep.artifactId == 'vaadin'})
+		}
+
+		pomFile = "$buildDir/generatedPoms/pom.xml" as File
+		doFirst {
+			pom.writeTo(pomFile)
+		}
+	}
+
 	jar {
+		dependsOn generatePom
 		// Include sources to jar
 		from sourceSets.main.allJava
 		manifest = project.manifest {
 			from sharedManifest
 		}
+		metaInf {
+			from "$buildDir/generatedPoms/pom.xml"
+			into "maven/${project.group}/$archivesBaseName"
+		}
 	}
-	
+
 	task createZip(type: Zip) {
 		from jar.outputs.files
 		from configurations.vaadinDependency
