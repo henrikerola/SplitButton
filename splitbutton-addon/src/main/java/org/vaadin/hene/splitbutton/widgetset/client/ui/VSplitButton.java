@@ -12,6 +12,7 @@ import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.RenderSpace;
 import com.vaadin.terminal.gwt.client.UIDL;
 import com.vaadin.terminal.gwt.client.Util;
+import com.vaadin.terminal.gwt.client.VConsole;
 
 public class VSplitButton extends Composite implements Paintable, Container {
 
@@ -23,6 +24,7 @@ public class VSplitButton extends Composite implements Paintable, Container {
 	private Widget popupButtonWidget;
 
 	private boolean initDone = false;
+
 	private String width;
 	private String height;
 
@@ -52,6 +54,7 @@ public class VSplitButton extends Composite implements Paintable, Container {
 
 		if (!initDone) {
 			setButtonWidth();
+			setHeight();
 		}
 
 		initDone = true;
@@ -83,10 +86,36 @@ public class VSplitButton extends Composite implements Paintable, Container {
 		}
 	}
 
+	private void setHeight() {
+		if (this.height == null) {
+			buttonWidget.setHeight("");
+			popupButtonWidget.setHeight("");
+			int buttonHeight = Util.getRequiredHeight(buttonWidget);
+			int popupButtonHeight = Util.getRequiredHeight(popupButtonWidget);
+			if (buttonHeight > popupButtonHeight) {
+				buttonWidget.setHeight(buttonHeight + "px");
+				popupButtonWidget.setHeight(buttonHeight + "px");
+			} else {
+				buttonWidget.setHeight(popupButtonHeight + "px");
+				popupButtonWidget.setHeight(popupButtonHeight + "px");
+			}
+		} else {
+			buttonWidget.setHeight(this.height);
+			popupButtonWidget.setHeight(this.height);
+		}
+	}
+
 	@Override
 	public void setHeight(String height) {
-		// TODO Auto-generated method stub
 		super.setHeight(height);
+		if (height == null || "".equals(height)) {
+			this.height = null;
+		} else {
+			this.height = height;
+		}
+		if (initDone) {
+			setHeight();
+		}
 	}
 
 	public void replaceChildComponent(Widget oldComponent, Widget newComponent) {
@@ -95,7 +124,7 @@ public class VSplitButton extends Composite implements Paintable, Container {
 	}
 
 	public boolean hasChildComponent(Widget component) {
-		return component.getParent() == this;
+		return component.getParent() == panel;
 	}
 
 	public void updateCaption(Paintable component, UIDL uidl) {
@@ -104,13 +133,14 @@ public class VSplitButton extends Composite implements Paintable, Container {
 	}
 
 	public boolean requestLayout(Set<Paintable> children) {
-		// TODO Auto-generated method stub
+		if (initDone) {
+			setButtonWidth();
+			setHeight();
+		}
 		return false;
 	}
 
 	public RenderSpace getAllocatedSpace(Widget child) {
-		// TODO Auto-generated method stub
-		return null;
+		return new RenderSpace(getOffsetWidth(), getOffsetHeight());
 	}
-
 }

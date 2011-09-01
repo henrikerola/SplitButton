@@ -25,6 +25,8 @@ import com.vaadin.ui.ComponentContainer;
 @SuppressWarnings("serial")
 public class SplitButton extends AbstractComponent implements
 		ComponentContainer, ClickListener, PopupVisibilityListener {
+	
+	public static final String STYLE_CHAMELEON = "chameleon";
 
 	private static class PopupButton extends
 			org.vaadin.hene.popupbutton.PopupButton {
@@ -41,10 +43,12 @@ public class SplitButton extends AbstractComponent implements
 
 	public SplitButton() {
 		button = new Button();
+		button.setHeight("100%");
 		button.setParent(this);
 		button.addListener(this);
 
 		popupButton = new PopupButton(this);
+		popupButton.setHeight("100%");
 		popupButton.setParent(this);
 		popupButton.addPopupVisibilityListener(this);
 	}
