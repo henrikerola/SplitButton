@@ -1,0 +1,5 @@
+@import "../chameleon/styles.css";
+
+.v-splitbutton-icon-on-top .v-popup-indicator {
+	margin-top: 6px;
+}
