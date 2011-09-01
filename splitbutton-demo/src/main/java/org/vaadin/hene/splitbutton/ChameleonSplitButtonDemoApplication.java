@@ -13,6 +13,8 @@ import com.vaadin.ui.themes.ChameleonTheme;
 import com.vaadin.ui.themes.Reindeer;
 
 public class ChameleonSplitButtonDemoApplication extends Application {
+	
+	private SplitButton splitButton;
 
 	@Override
 	public void init() {
@@ -21,13 +23,16 @@ public class ChameleonSplitButtonDemoApplication extends Application {
 		
 		HorizontalLayout layout = new HorizontalLayout();
 		layout.setMargin(true);
+		mainWindow.setContent(layout);
 		
-		SplitButton splitButton = new SplitButton();
+		splitButton = new SplitButton();
 		splitButton.setIcon(new ThemeResource("icons/emotion_smile.png"));
 		splitButton.setComponent(createSplitButtonPopupContent1());
 		splitButton.setStyleName(ChameleonTheme.BUTTON_ICON_ON_TOP);
 		splitButton.addStyleName(SplitButton.STYLE_CHAMELEON);
 		layout.addComponent(splitButton);
+		
+		setTheme("splitbuttondemo-chameleon");
 
 	}
 	
@@ -51,7 +56,7 @@ public class ChameleonSplitButtonDemoApplication extends Application {
 	private Button createButton(String caption, String icon) {
 		Button button = new Button(caption, new ClickListener() {
 			public void buttonClick(ClickEvent event) {
-				//splitButton.setPopupVisible(false);
+				splitButton.setPopupVisible(false);
 			}
 		});
 		button.setStyleName(Reindeer.BUTTON_LINK);

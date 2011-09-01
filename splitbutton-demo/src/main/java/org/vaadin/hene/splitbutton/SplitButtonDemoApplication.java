@@ -6,20 +6,19 @@ import org.vaadin.hene.splitbutton.SplitButton.SplitButtonPopupVisibilityEvent;
 import org.vaadin.hene.splitbutton.SplitButton.SplitButtonPopupVisibilityListener;
 
 import com.vaadin.Application;
+import com.vaadin.terminal.ExternalResource;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
-import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.themes.ChameleonTheme;
 import com.vaadin.ui.themes.Reindeer;
 
 @SuppressWarnings("serial")
@@ -27,43 +26,41 @@ public class SplitButtonDemoApplication extends Application {
 
 	private SplitButton splitButton;
 
-	private Component reindeerTab;
-
-	private Component chameleonTab;
-
 	@Override
 	public void init() {
 		Window mainWindow = new Window("SplitButton Demo Application");
 		setMainWindow(mainWindow);
 
+		VerticalLayout mainLayout = new VerticalLayout();
+		mainLayout.setSizeFull();
+		mainLayout.setMargin(true);
+		mainWindow.setContent(mainLayout);
+
+		Label headerLabel = new Label("SplitButton");
+		headerLabel.setStyleName(Reindeer.LABEL_H1);
+		mainLayout.addComponent(headerLabel);
+
 		TabSheet tabSheet = new TabSheet();
-		tabSheet.addListener(new SelectedTabChangeListener() {
-			public void selectedTabChange(SelectedTabChangeEvent event) {
-				Component selectedTab = event.getTabSheet().getSelectedTab();
-				if (reindeerTab == selectedTab) {
-					setTheme("reindeer");
-				} else if (chameleonTab == selectedTab) {
-					setTheme("splitbuttondemo-chameleon");
-				}
-			}
-		});
 		tabSheet.setSizeFull();
-		mainWindow.setContent(tabSheet);
+		mainLayout.addComponent(tabSheet);
+		mainLayout.setExpandRatio(tabSheet, 1);
 
 		tabSheet.addTab(createChameleonTab(), "Chameleon", null);
 		tabSheet.addTab(createReindeerTab(), "Reindeer", null);
 	}
 
 	private Component createChameleonTab() {
-		
-
-		return chameleonTab;
+		Embedded embedded = new Embedded();
+		embedded.setSource(new ExternalResource(
+				"/splitbutton/chameleon?restartApplication"));
+		embedded.setType(Embedded.TYPE_BROWSER);
+		embedded.setSizeFull();
+		return embedded;
 	}
 
 	private Component createReindeerTab() {
 		HorizontalLayout layout = new HorizontalLayout();
 		layout.setMargin(true);
-		reindeerTab = layout;
 
 		splitButton = new SplitButton("New Document");
 		splitButton.setIcon(new ThemeResource(

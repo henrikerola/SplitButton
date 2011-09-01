@@ -38,6 +38,12 @@
 			<param-name>application</param-name>
 			<param-value>org.vaadin.hene.splitbutton.ChameleonSplitButtonDemoApplication</param-value>
 		</init-param>
+		<init-param>
+			<description>
+			Application widgetset</description>
+			<param-name>widgetset</param-name>
+			<param-value>org.vaadin.hene.splitbutton.widgetset.SplitButtonDemoApplicationWidgetSet</param-value>
+		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Chameleon SplitButton Demo Application</servlet-name>
