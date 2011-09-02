@@ -97,15 +97,22 @@
 }
 
 .v-splitbutton-chameleon .v-button .v-button-wrap 
-/*.v-splitbutton-chameleon .v-disabled:active .v-button-wrap*/ {
+.v-splitbutton-chameleon .v-disabled:active .v-button-wrap {
 	border-radius: 2px 0 0 2px;
 	-moz-border-radius: 2px 0 0 2px;
 	-webkit-border-radius: 2px 0 0 2px;
 }
 
 .v-splitbutton-chameleon .v-popupbutton .v-button-wrap 
-/*.v-splitbutton-chameleon .v-disabled:active .v-button-wrap*/ {
+.v-splitbutton-chameleon .v-popupbutton.v-disabled:active .v-button-wrap {
 	border-radius: 0 2px 2px 0;
 	-moz-border-radius: 0 2px 2px 0;
 	-webkit-border-radius: 0 2px 2px 0;
+}
+
+.v-splitbutton-chameleon .v-popupbutton:active .v-button-wrap,
+.v-ie7 .v-splitbutton-chameleon .v-pressed.v-popupbutton .v-button-wrap,
+.v-ie8 .v-splitbutton-chameleon .v-pressed.v-popupbutton .v-button-wrap {
+	border-bottom: none;
+	padding: 3px 10px 0px 2px		
 }
