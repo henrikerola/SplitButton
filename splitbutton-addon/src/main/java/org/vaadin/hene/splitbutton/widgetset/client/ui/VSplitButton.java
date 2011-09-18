@@ -12,7 +12,6 @@ import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.RenderSpace;
 import com.vaadin.terminal.gwt.client.UIDL;
 import com.vaadin.terminal.gwt.client.Util;
-import com.vaadin.terminal.gwt.client.VConsole;
 
 public class VSplitButton extends Composite implements Paintable, Container {
 
@@ -25,6 +24,7 @@ public class VSplitButton extends Composite implements Paintable, Container {
 
 	private boolean initDone = false;
 
+	private RenderSpace renderSpace = new RenderSpace();
 	private String width;
 	private String height;
 
@@ -68,7 +68,7 @@ public class VSplitButton extends Composite implements Paintable, Container {
 					.getElement());
 			buttonWidget.setWidth((getOffsetWidth() - popupButtonWidth) + "px");
 		}
-
+		renderSpace.setWidth(getOffsetWidth());
 	}
 
 	@Override
@@ -95,13 +95,17 @@ public class VSplitButton extends Composite implements Paintable, Container {
 			if (buttonHeight > popupButtonHeight) {
 				buttonWidget.setHeight(buttonHeight + "px");
 				popupButtonWidget.setHeight(buttonHeight + "px");
+				renderSpace.setHeight(buttonHeight);
 			} else {
 				buttonWidget.setHeight(popupButtonHeight + "px");
 				popupButtonWidget.setHeight(popupButtonHeight + "px");
+				renderSpace.setHeight(popupButtonHeight);
 			}
 		} else {
 			buttonWidget.setHeight(this.height);
 			popupButtonWidget.setHeight(this.height);
+			renderSpace.setHeight(Integer.parseInt(this.height.substring(0,
+					this.height.length() - 2)));
 		}
 	}
 
@@ -141,6 +145,6 @@ public class VSplitButton extends Composite implements Paintable, Container {
 	}
 
 	public RenderSpace getAllocatedSpace(Widget child) {
-		return new RenderSpace(getOffsetWidth(), getOffsetHeight());
+		return renderSpace;
 	}
 }
