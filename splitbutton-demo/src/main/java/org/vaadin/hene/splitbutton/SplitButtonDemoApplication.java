@@ -30,6 +30,8 @@ public class SplitButtonDemoApplication extends Application {
 	public void init() {
 		Window mainWindow = new Window("SplitButton Demo Application");
 		setMainWindow(mainWindow);
+		
+		setTheme("splitbuttondemo-reindeer");
 
 		VerticalLayout mainLayout = new VerticalLayout();
 		mainLayout.setSizeFull();

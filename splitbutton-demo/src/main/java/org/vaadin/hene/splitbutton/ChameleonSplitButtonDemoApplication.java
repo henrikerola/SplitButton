@@ -13,15 +13,13 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextArea;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ChameleonTheme;
 import com.vaadin.ui.themes.Reindeer;
 
 public class ChameleonSplitButtonDemoApplication extends Application {
-
-	private SplitButton splitButton1;
-	private SplitButton splitButton2;
 
 	@Override
 	public void init() {
@@ -39,20 +37,25 @@ public class ChameleonSplitButtonDemoApplication extends Application {
 		mainLayout.addComponent(layout);
 		mainLayout.setExpandRatio(layout, 1);
 
-		splitButton1 = new SplitButton();
+		SplitButton splitButton1 = new SplitButton();
 		splitButton1.setIcon(new ThemeResource("icons/emotion_smile.png"));
 		splitButton1.setComponent(createSplitButtonPopupContent1());
 		splitButton1.setStyleName(ChameleonTheme.BUTTON_ICON_ON_TOP);
 		splitButton1.addStyleName(SplitButton.STYLE_CHAMELEON);
 		layout.addComponent(splitButton1);
 
-		splitButton2 = new SplitButton("Accept");
+		SplitButton splitButton2 = new SplitButton("Accept");
 		splitButton2.setIcon(new ThemeResource("icons/tick.png"));
 		splitButton2.addStyleName(SplitButton.STYLE_CHAMELEON);
 		splitButton2.setComponent(createSplitButtonPopupContent2());
 		layout.addComponent(splitButton2);
+		
+		SplitButton splitButton3 = new SplitButton("Caption");
+		splitButton3.addStyleName(SplitButton.STYLE_CHAMELEON);
+		splitButton3.setComponent(createSplitButtonPopupContent3());
+		layout.addComponent(splitButton3);
 
-		mainLayout.addComponent(createIcons());
+		mainLayout.addComponent(createIconsInfoLabel());
 
 		setTheme("splitbuttondemo-chameleon");
 
@@ -85,17 +88,19 @@ public class ChameleonSplitButtonDemoApplication extends Application {
 
 	private Layout createSplitButtonPopupContent3() {
 		VerticalLayout layout = new VerticalLayout();
-		layout.setWidth("200px");
-		layout.setHeight("200px");
+		layout.setSpacing(true);
+		layout.setWidth("250px");
 
 		Label label = new Label(
 				"Popup can contain any Vaadin Component or ComponentContainer.");
 		layout.addComponent(label);
 
-		TextArea ta = new TextArea();
-		ta.setSizeFull();
-		layout.addComponent(ta);
-		layout.setExpandRatio(ta, 1);
+		TextField tf = new TextField("TextField");
+		layout.addComponent(tf);
+		Button button = new Button("Button");
+		layout.addComponent(button);
+		
+		
 
 		return layout;
 	}
@@ -114,9 +119,9 @@ public class ChameleonSplitButtonDemoApplication extends Application {
 		return button;
 	}
 
-	private Label createIcons() {
+	private Label createIconsInfoLabel() {
 		Label label = new Label(
-				"Icons from <a href=\"http://www.fatcow.com/free-icons\">FatCow.com</a>",
+				"Icons from <a href=\"http://www.fatcow.com/free-icons\" target=\"_parent\">FatCow.com</a>",
 				Label.CONTENT_XHTML);
 		label.setSizeUndefined();
 		return label;
