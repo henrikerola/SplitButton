@@ -1,3 +1,18 @@
+/*
+ * Copyright 2011 Henri Kerola
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.vaadin.hene.splitbutton;
 
 import java.io.Serializable;
@@ -21,11 +36,14 @@ import com.vaadin.ui.ClientWidget;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
 
+/**
+ * @author Henri Kerola
+ */
 @ClientWidget(VSplitButton.class)
 @SuppressWarnings("serial")
 public class SplitButton extends AbstractComponent implements
 		ComponentContainer, ClickListener, PopupVisibilityListener {
-	
+
 	public static final String STYLE_CHAMELEON = "chameleon";
 
 	private static class PopupButton extends
@@ -104,14 +122,48 @@ public class SplitButton extends AbstractComponent implements
 		button.setIcon(icon);
 	}
 
+	/**
+	 * Returns the description (tooltip) of the primary button.
+	 */
 	@Override
 	public String getDescription() {
 		return button.getDescription();
 	}
 
+	/**
+	 * Sets description (tooltip) for both the primary and popup buttons.
+	 */
 	@Override
 	public void setDescription(String description) {
 		button.setDescription(description);
+		popupButton.setDescription(description);
+	}
+
+	/**
+	 * Returns the description (tooltip) of the primary button.
+	 */
+	public String getButtonDescription() {
+		return button.getDescription();
+	}
+
+	/**
+	 * Sets description (tooltip) for the primary button.
+	 */
+	public void setButtonDescription(String description) {
+		button.setDescription(description);
+	}
+
+	/**
+	 * Returns the description (tooltip) of the popup button.
+	 */
+	public String getPopupButtonDescription() {
+		return popupButton.getDescription();
+	}
+
+	/**
+	 * Sets description (tooltip) for the popup button.
+	 */
+	public void setPopupButtonDescription(String description) {
 		popupButton.setDescription(description);
 	}
 
