@@ -2,7 +2,7 @@ allprojects {
 	apply plugin: 'eclipse-wtp'
 
 	group = 'org.vaadin.hene.splitbutton'
-	version = '0.9.4'
+	version = '0.9.5'
 }
 
 libraries = [
@@ -10,8 +10,8 @@ libraries = [
 	popupbutton: 'org.vaadin.addons:popupbutton:1.2.1',
 	gwtUser: 'com.google.gwt:gwt-user:2.3.0',
 	gwtDev: 'com.google.gwt:gwt-dev:2.3.0',
-	validationApi: 'javax.validation:validation-api:1.0.0.GA:sources'
-	
+	validationApi: 'javax.validation:validation-api:1.0.0.GA:sources',
+	junit: 'junit:junit:4.+'
 ]
 
 subprojects {
@@ -42,6 +42,7 @@ subprojects {
 	dependencies {
 		compile(libraries.vaadin)
 		compile(libraries.popupbutton)
+		testCompile(libraries.junit)
 		vaadinDependency(libraries.popupbutton)
 		provided(libraries.gwtDev)
 		provided(libraries.gwtUser)

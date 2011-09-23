@@ -219,6 +219,7 @@ public class SplitButton extends AbstractComponent implements
 	}
 
 	public void requestRepaintAll() {
+		button.requestRepaint();
 		popupButton.requestRepaintAll();
 	}
 
@@ -468,7 +469,8 @@ public class SplitButton extends AbstractComponent implements
 	public void popupVisibilityChange(PopupVisibilityEvent event) {
 		SplitButtonPopupVisibilityEvent newEvent = new SplitButtonPopupVisibilityEvent(
 				this);
-		for (SplitButtonPopupVisibilityListener listener : popupVisibilityListeners) {
+		for (SplitButtonPopupVisibilityListener listener : new LinkedList<SplitButtonPopupVisibilityListener>(
+				popupVisibilityListeners)) {
 			listener.splitButtonPopupVisibilityChange(newEvent);
 		}
 	}
