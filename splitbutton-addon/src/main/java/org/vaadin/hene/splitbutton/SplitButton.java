@@ -46,9 +46,10 @@ public class SplitButton extends AbstractComponent implements
 
 	public static final String STYLE_CHAMELEON = "chameleon";
 
-	private static class PopupButton extends
+	protected static class PopupButton extends
 			org.vaadin.hene.popupbutton.PopupButton {
-		public PopupButton(Paintable popupPositionPaintable) {
+		
+		public void setPopupPositionPaintable(Paintable popupPositionPaintable) {
 			this.popupPositionPaintable = popupPositionPaintable;
 		}
 	}
@@ -60,12 +61,20 @@ public class SplitButton extends AbstractComponent implements
 	private final PopupButton popupButton;
 
 	public SplitButton() {
-		button = new Button();
+		this(new Button(), new PopupButton());
+	}
+
+	/**
+	 * This is not a part of the official API of SplitButton, just for testing purposes. 
+	 */
+	protected SplitButton(Button button, PopupButton popupButton) {
+		this.button = button;
 		button.setHeight("100%");
 		button.setParent(this);
 		button.addListener(this);
 
-		popupButton = new PopupButton(this);
+		this.popupButton = popupButton;
+		popupButton.setPopupPositionPaintable(this);
 		popupButton.setHeight("100%");
 		popupButton.setParent(this);
 		popupButton.addPopupVisibilityListener(this);
@@ -187,6 +196,18 @@ public class SplitButton extends AbstractComponent implements
 		button.removeStyleName(style);
 		popupButton.removeStyleName(style);
 	}
+	
+	@Override
+	// Copied from AbstractComponentContainer
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        if (getParent() != null && !getParent().isEnabled()) {
+            // some ancestor still disabled, don't update children
+            return;
+        } else {
+            requestRepaintAll();
+        }
+    }
 
 	/**
 	 * Set the content component of the popup.
@@ -219,6 +240,7 @@ public class SplitButton extends AbstractComponent implements
 	}
 
 	public void requestRepaintAll() {
+		requestRepaint();
 		button.requestRepaint();
 		popupButton.requestRepaintAll();
 	}

@@ -1,12 +1,14 @@
 package org.vaadin.hene.splitbutton;
 
-import static org.junit.Assert.fail;
+import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.vaadin.hene.popupbutton.PopupButton.PopupVisibilityEvent;
+import org.vaadin.hene.splitbutton.SplitButton.PopupButton;
 import org.vaadin.hene.splitbutton.SplitButton.SplitButtonPopupVisibilityEvent;
 import org.vaadin.hene.splitbutton.SplitButton.SplitButtonPopupVisibilityListener;
+
+import com.vaadin.ui.Button;
 
 public class SplitButtonTest {
 
@@ -27,6 +29,21 @@ public class SplitButtonTest {
 			}
 		});
 		splitButton.popupVisibilityChange(null);
+	}
+	
+	@Test
+	public void testSetReadOnlyShouldRequestRepaintAllComponents() {
+		Button button = mock(Button.class);
+		PopupButton popupButton = mock(PopupButton.class);
+		
+		SplitButton splitButton = new SplitButton(button, popupButton);
+		SplitButton spy = spy(splitButton);
+		
+		spy.setEnabled(true);
+
+		verify(spy).requestRepaint();
+		verify(button).requestRepaint();
+		verify(popupButton).requestRepaintAll();
 	}
 
 }
