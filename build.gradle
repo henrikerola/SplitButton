@@ -11,7 +11,8 @@ libraries = [
 	gwtUser: 'com.google.gwt:gwt-user:2.3.0',
 	gwtDev: 'com.google.gwt:gwt-dev:2.3.0',
 	validationApi: 'javax.validation:validation-api:1.0.0.GA:sources',
-	junit: 'junit:junit:4.+'
+	junit: 'junit:junit:4.+',
+	mockito: 'org.mockito:mockito-core:1.9.0-rc1'
 ]
 
 subprojects {
@@ -43,6 +44,7 @@ subprojects {
 		compile(libraries.vaadin)
 		compile(libraries.popupbutton)
 		testCompile(libraries.junit)
+		testCompile(libraries.mockito)
 		vaadinDependency(libraries.popupbutton)
 		provided(libraries.gwtDev)
 		provided(libraries.gwtUser)
