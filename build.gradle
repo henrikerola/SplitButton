@@ -68,9 +68,11 @@ project(':splitbutton-addon') {
 	task generatePom {
 		pom = pom()
 		pom.artifactId = archivesBaseName
-		pom.whenConfigured {
-			// Remove vaadin from the dependency list in the pom
-			pom -> pom.dependencies.remove(pom.dependencies.find {dep -> dep.artifactId == 'vaadin'})
+		pom.whenConfigured { pom -> 
+			// Remove vaadin, junit and mockito from the dependency list in the pom
+			pom.dependencies.remove(pom.dependencies.find {dep -> dep.artifactId == 'vaadin'})
+			pom.dependencies.remove(pom.dependencies.find {dep -> dep.artifactId == 'junit'})
+			pom.dependencies.remove(pom.dependencies.find {dep -> dep.artifactId == 'mockito-core'})
 		}
 
 		pomFile = "$buildDir/generatedPoms/pom.xml" as File
