@@ -17,6 +17,7 @@ package org.vaadin.hene.splitbutton.widgetset.client.ui;
 
 import java.util.Set;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
@@ -42,7 +43,10 @@ public class VSplitButton extends Composite implements Paintable, Container {
 
 	private boolean initDone = false;
 
-	private RenderSpace renderSpace = new RenderSpace();
+	private int buttonWidth;
+	private int popupButtonWidth;
+	private int buttonsHeight;
+
 	private String width;
 	private String height;
 
@@ -81,12 +85,17 @@ public class VSplitButton extends Composite implements Paintable, Container {
 	private void setButtonWidth() {
 		if (width == null) {
 			buttonWidget.setWidth("");
+			popupButtonWidth = -1;
 		} else {
-			int popupButtonWidth = Util.getRequiredWidth(popupButtonWidget
+			popupButtonWidth = Util.getRequiredWidth(popupButtonWidget
 					.getElement());
-			buttonWidget.setWidth((getOffsetWidth() - popupButtonWidth) + "px");
+
+			buttonWidth = getOffsetWidth() - popupButtonWidth;
+			if (buttonWidth < 0) {
+				buttonWidth = 0;
+			}
+			buttonWidget.setWidth(buttonWidth + "px");
 		}
-		renderSpace.setWidth(getOffsetWidth());
 	}
 
 	@Override
@@ -113,17 +122,17 @@ public class VSplitButton extends Composite implements Paintable, Container {
 			if (buttonHeight > popupButtonHeight) {
 				buttonWidget.setHeight(buttonHeight + "px");
 				popupButtonWidget.setHeight(buttonHeight + "px");
-				renderSpace.setHeight(buttonHeight);
+				buttonsHeight = buttonHeight;
 			} else {
 				buttonWidget.setHeight(popupButtonHeight + "px");
 				popupButtonWidget.setHeight(popupButtonHeight + "px");
-				renderSpace.setHeight(popupButtonHeight);
+				buttonsHeight = popupButtonHeight;
 			}
 		} else {
 			buttonWidget.setHeight(this.height);
 			popupButtonWidget.setHeight(this.height);
-			renderSpace.setHeight(Integer.parseInt(this.height.substring(0,
-					this.height.length() - 2)));
+			buttonsHeight = Integer.parseInt(this.height.substring(0,
+					this.height.length() - 2));
 		}
 	}
 
@@ -163,6 +172,13 @@ public class VSplitButton extends Composite implements Paintable, Container {
 	}
 
 	public RenderSpace getAllocatedSpace(Widget child) {
-		return renderSpace;
+		if (buttonWidget == child) {
+			return new RenderSpace(buttonWidth, buttonsHeight);
+		} else if (popupButtonWidget == child) {
+			return new RenderSpace(popupButtonWidth, buttonsHeight);
+		} else {
+			return new RenderSpace(buttonWidth + popupButtonWidth,
+					buttonsHeight);
+		}
 	}
 }

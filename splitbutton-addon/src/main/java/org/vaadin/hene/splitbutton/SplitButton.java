@@ -28,6 +28,7 @@ import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.terminal.Paintable;
 import com.vaadin.terminal.Resource;
+import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -48,7 +49,7 @@ public class SplitButton extends AbstractComponent implements
 
 	protected static class PopupButton extends
 			org.vaadin.hene.popupbutton.PopupButton {
-		
+
 		public void setPopupPositionPaintable(Paintable popupPositionPaintable) {
 			this.popupPositionPaintable = popupPositionPaintable;
 		}
@@ -65,7 +66,8 @@ public class SplitButton extends AbstractComponent implements
 	}
 
 	/**
-	 * This is not a part of the official API of SplitButton, just for testing purposes. 
+	 * This is not a part of the official API of SplitButton, just for testing
+	 * purposes.
 	 */
 	protected SplitButton(Button button, PopupButton popupButton) {
 		this.button = button;
@@ -196,18 +198,31 @@ public class SplitButton extends AbstractComponent implements
 		button.removeStyleName(style);
 		popupButton.removeStyleName(style);
 	}
-	
+
 	@Override
 	// Copied from AbstractComponentContainer
-    public void setEnabled(boolean enabled) {
-        super.setEnabled(enabled);
-        if (getParent() != null && !getParent().isEnabled()) {
-            // some ancestor still disabled, don't update children
-            return;
-        } else {
-            requestRepaintAll();
-        }
-    }
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		if (getParent() != null && !getParent().isEnabled()) {
+			// some ancestor still disabled, don't update children
+			return;
+		} else {
+			requestRepaintAll();
+		}
+	}
+
+	@Override
+	public void setWidth(float width, int unit) {
+		if (Sizeable.SIZE_UNDEFINED == unit
+				&& button.getWidthUnits() != Sizeable.SIZE_UNDEFINED) {
+			button.setWidth(null);
+			requestRepaint();
+		} else if (button.getWidthUnits() != Sizeable.UNITS_PERCENTAGE) {
+			button.setWidth("100%");
+			requestRepaint();
+		}
+		super.setWidth(width, unit);
+	}
 
 	/**
 	 * Set the content component of the popup.
