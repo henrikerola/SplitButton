@@ -6,7 +6,7 @@ allprojects {
 }
 
 libraries = [
-	vaadin: 'com.vaadin:vaadin:6.7.0.beta1',
+	vaadin: 'com.vaadin:vaadin:6.7.0',
 	popupbutton: 'org.vaadin.addons:popupbutton:1.2.1',
 	gwtUser: 'com.google.gwt:gwt-user:2.3.0',
 	gwtDev: 'com.google.gwt:gwt-dev:2.3.0',
